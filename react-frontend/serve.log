@@ -1,0 +1,48 @@
+nohup: ignoring input
+ INFO  Accepting connections at http://localhost:3000
+ HTTP  6/21/2025 7:22:23 PM 27.63.225.15 GET /
+ HTTP  6/21/2025 7:22:23 PM 27.63.225.15 Returned 200 in 23 ms
+ HTTP  6/21/2025 7:22:24 PM 27.63.225.15 GET /static/css/2.af3c1da9.chunk.css
+ HTTP  6/21/2025 7:22:24 PM 27.63.225.15 Returned 200 in 3 ms
+ HTTP  6/21/2025 7:22:24 PM 27.63.225.15 GET /static/css/main.941a7d5c.chunk.css
+ HTTP  6/21/2025 7:22:24 PM 27.63.225.15 Returned 200 in 2 ms
+ HTTP  6/21/2025 7:22:24 PM 27.63.225.15 GET /static/js/2.adf17f9f.chunk.js
+ HTTP  6/21/2025 7:22:24 PM 27.63.225.15 Returned 200 in 2 ms
+ HTTP  6/21/2025 7:22:24 PM 27.63.225.15 GET /static/js/main.71ecc247.chunk.js
+ HTTP  6/21/2025 7:22:24 PM 27.63.225.15 Returned 200 in 3 ms
+ HTTP  6/21/2025 7:22:25 PM 27.63.225.15 GET /favicon.ico
+ HTTP  6/21/2025 7:22:25 PM 27.63.225.15 GET /logo192.png
+ HTTP  6/21/2025 7:22:25 PM 27.63.225.15 Returned 200 in 3 ms
+ HTTP  6/21/2025 7:22:25 PM 27.63.225.15 Returned 200 in 3 ms
+ HTTP  6/21/2025 7:23:12 PM 27.63.225.15 GET /logo192.png
+ HTTP  6/21/2025 7:23:12 PM 27.63.225.15 Returned 304 in 3 ms
+ HTTP  6/21/2025 7:23:14 PM 27.63.225.15 GET /logo192.png
+ HTTP  6/21/2025 7:23:14 PM 27.63.225.15 Returned 304 in 2 ms
+ HTTP  6/21/2025 7:23:23 PM 27.63.225.15 GET /employees
+ HTTP  6/21/2025 7:23:23 PM 27.63.225.15 Returned 200 in 3 ms
+ HTTP  6/21/2025 7:23:23 PM 27.63.225.15 GET /static/js/2.adf17f9f.chunk.js
+ HTTP  6/21/2025 7:23:23 PM 27.63.225.15 Returned 304 in 1 ms
+ HTTP  6/21/2025 7:23:23 PM 27.63.225.15 GET /static/css/main.941a7d5c.chunk.css
+ HTTP  6/21/2025 7:23:23 PM 27.63.225.15 Returned 304 in 2 ms
+ HTTP  6/21/2025 7:23:23 PM 27.63.225.15 GET /static/css/2.af3c1da9.chunk.css
+ HTTP  6/21/2025 7:23:23 PM 27.63.225.15 Returned 304 in 1 ms
+ HTTP  6/21/2025 7:23:23 PM 27.63.225.15 GET /static/js/main.71ecc247.chunk.js
+ HTTP  6/21/2025 7:23:23 PM 27.63.225.15 Returned 304 in 1 ms
+ HTTP  6/21/2025 7:23:24 PM 27.63.225.15 GET /logo192.png
+ HTTP  6/21/2025 7:23:24 PM 27.63.225.15 Returned 304 in 1 ms
+ HTTP  6/21/2025 7:23:24 PM 27.63.225.15 GET /favicon.ico
+ HTTP  6/21/2025 7:23:24 PM 27.63.225.15 Returned 304 in 0 ms
+ HTTP  6/21/2025 7:23:31 PM 27.63.225.15 GET /logo192.png
+ HTTP  6/21/2025 7:23:31 PM 27.63.225.15 Returned 304 in 2 ms
+ HTTP  6/21/2025 7:23:34 PM 27.63.225.15 GET /logo192.png
+ HTTP  6/21/2025 7:23:34 PM 27.63.225.15 Returned 304 in 2 ms
+ HTTP  6/21/2025 7:23:35 PM 27.63.225.15 GET /logo192.png
+ HTTP  6/21/2025 7:23:35 PM 27.63.225.15 Returned 304 in 1 ms
+ HTTP  6/21/2025 7:23:38 PM 27.63.225.15 GET /logo192.png
+ HTTP  6/21/2025 7:23:38 PM 27.63.225.15 Returned 304 in 1 ms
+ HTTP  6/21/2025 7:23:39 PM 27.63.225.15 GET /logo192.png
+ HTTP  6/21/2025 7:23:39 PM 27.63.225.15 Returned 304 in 1 ms
+ HTTP  6/21/2025 7:23:43 PM 27.63.225.15 GET /logo192.png
+ HTTP  6/21/2025 7:23:43 PM 27.63.225.15 Returned 304 in 2 ms
+ HTTP  6/21/2025 7:35:39 PM 27.63.225.15 GET /logo192.png
+ HTTP  6/21/2025 7:35:39 PM 27.63.225.15 Returned 304 in 1 ms

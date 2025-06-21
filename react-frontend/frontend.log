@@ -1,7 +1,7 @@
 nohup: ignoring input
 
 > react-frontend@0.1.0 start
-> react-scripts start
+> react-scripts start --host 0.0.0.0
 
 [34mℹ[39m [90m｢wds｣[39m: Project is running at http://172.31.94.208/
 [34mℹ[39m [90m｢wds｣[39m: webpack output is served from 
