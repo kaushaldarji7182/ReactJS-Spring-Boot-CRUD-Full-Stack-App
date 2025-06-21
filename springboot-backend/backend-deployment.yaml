@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboot-backend
+  template:
+    metadata:
+      labels:
+        app: springboot-backend
+    spec:
+      containers:
+        - name: backend
+          image: 235494811179.dkr.ecr.us-east-1.amazonaws.com/kaushal-backend-ecr
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://kaushal-db.cn0us0ksu6a4.us-east-1.rds.amazonaws.com:3306/capstone_db?useSSL=false&serverTimezone=UTC
+            - name: SPRING_DATASOURCE_USERNAME
+              value: Kaushal7182
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: Kaushal7182

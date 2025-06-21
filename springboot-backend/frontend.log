@@ -1,0 +1,11 @@
+nohup: ignoring input
+npm ERR! code ENOENT
+npm ERR! syscall open
+npm ERR! path /root/ReactJS-Spring-Boot-CRUD-Full-Stack-App/springboot-backend/package.json
+npm ERR! errno -2
+npm ERR! enoent ENOENT: no such file or directory, open '/root/ReactJS-Spring-Boot-CRUD-Full-Stack-App/springboot-backend/package.json'
+npm ERR! enoent This is related to npm not being able to find a file.
+npm ERR! enoent 
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /root/.npm/_logs/2025-06-21T19_18_28_015Z-debug-0.log
