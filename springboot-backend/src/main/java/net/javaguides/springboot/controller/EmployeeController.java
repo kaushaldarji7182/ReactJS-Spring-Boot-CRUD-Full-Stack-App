@@ -21,7 +21,8 @@ import net.javaguides.springboot.model.Employee;
 import net.javaguides.springboot.repository.EmployeeRepository;
 
 // Update this line if you're accessing React via EC2 Public IP
-@CrossOrigin(origins = "http://44.204.88.192:3000")
+//@CrossOrigin(origins = "http://44.204.88.192:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/")
 public class EmployeeController {
