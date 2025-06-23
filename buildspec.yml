@@ -15,21 +15,18 @@ phases:
       nodejs: 18
       java: corretto17
     commands:
-      - echo Installing required packages...
+      - echo Installing dependencies...
       - yum install -y jq
 
   pre_build:
     commands:
       - echo Logging into Amazon ECR...
       - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com
-
       - export IMAGE_TAG=v1.${CODEBUILD_BUILD_NUMBER}
       - echo Image tag is $IMAGE_TAG
-
       - echo Installing frontend dependencies...
       - cd $FRONTEND_DIR && npm install && cd -
-
-      - echo Building Spring Boot backend JAR...
+      - echo Building backend JAR...
       - cd $BACKEND_DIR && ./mvnw package -DskipTests && cd -
 
   build:
@@ -45,17 +42,13 @@ phases:
       - echo Pushing Docker images to ECR...
       - docker push ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$FRONTEND_REPO:$IMAGE_TAG
       - docker push ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG
-
       - echo Preparing Kubernetes manifests...
       - mkdir -p k8s-out
-
       - sed "s|IMAGE_PLACEHOLDER|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$FRONTEND_REPO:$IMAGE_TAG|g" react-frontend/frontend-deployment.yaml > k8s-out/frontend-deployment.yaml
       - cp react-frontend/frontend-service.yaml k8s-out/frontend-service.yaml
-
       - sed "s|IMAGE_PLACEHOLDER|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG|g" springboot-backend/backend-deployment.yaml > k8s-out/backend-deployment.yaml
       - cp springboot-backend/backend-service.yaml k8s-out/backend-service.yaml
-
-      - echo Final list of generated Kubernetes manifests:
+      - echo Final list of generated Kubernetes YAMLs:
       - ls -la k8s-out
 
 artifacts:
@@ -63,3 +56,8 @@ artifacts:
   discard-paths: yes
   files:
     - '**/*.yaml'
+
+cache:
+  paths:
+    - 'react-frontend/node_modules/**/*'
+    - '/root/.m2/**/*'
