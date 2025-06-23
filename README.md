@@ -1,14 +1,12 @@
+# 🚀 React + Spring Boot Full Stack CRUD App
 
-
-## 🚀 React + Spring Boot Full Stack Application
-
-This project is a full-stack CRUD web application using **ReactJS** for the frontend and **Spring Boot** for the backend, connected to a **MySQL** database hosted on **AWS RDS**. Deployment is done on **EC2** instances, and optionally containerized using **Docker**.
+This project is a full-stack CRUD web application using **ReactJS** (frontend) and **Spring Boot** (backend), connected to a **MySQL** database hosted on **AWS RDS**. It is deployable on **AWS EC2** or **EKS**, with optional **Docker** and **Load Balancer** integration.
 
 ---
 
-## 🛠️ System Requirements
+## 🛠️ Environment Setup (On EC2 or Local Ubuntu)
 
-Install the following packages on your EC2/Ubuntu instance:
+Install the following packages:
 
 ```bash
 sudo apt update
@@ -19,7 +17,7 @@ sudo apt install openjdk-17-jdk -y
 # Maven
 sudo apt install maven -y
 
-# npm
+# Node.js & npm
 sudo apt install npm -y
 
 # Docker
@@ -32,49 +30,54 @@ sudo apt install mysql-client-core-8.0 -y
 # AWS CLI
 sudo snap install aws-cli --classic
 
-# eksctl (for EKS setup)
+# eksctl
 curl --silent --location "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
 
 # kubectl
 sudo snap install kubectl --classic
 
-# AWS Configure
+# Configure AWS CLI
 aws configure
+```
+
+---
+
+## 📦 Clone the Project
+
+```bash
+git clone https://github.com/kaushaldarji7182/ReactJS-Spring-Boot-CRUD-Full-Stack-App.git
 ```
 
 ---
 
 ## 🔧 Backend Setup (Spring Boot)
 
-### 1. Clone the Repo
-
 ```bash
-git clone https://github.com/kaushaldarji7182/ReactJS-Spring-Boot-CRUD-Full-Stack-App.git
 cd ReactJS-Spring-Boot-CRUD-Full-Stack-App/springboot-backend
 ```
 
-### 2. Configure Application
+### Configure Database Connection
 
-Edit `application.properties` with your RDS details:
+Edit `src/main/resources/application.properties`:
 
 ```properties
 spring.datasource.url=jdbc:mysql://<RDS-endpoint>:3306/capstone_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
 spring.datasource.username=admin
 spring.datasource.password=<your-password>
 
-# Allow frontend CORS
-frontend.url=http://<frontend-public-ip>:3000
+# CORS origin for frontend
+frontend.url=http://<frontend-lb-dns>:3000
 ```
 
-### 3. Build and Run Backend
+### Run Backend
 
 ```bash
 mvn clean install
-# For foreground run
+# To run in foreground
 mvn spring-boot:run
 
-# Or for background
+# To run in background
 nohup mvn spring-boot:run > backend.log 2>&1 &
 ```
 
@@ -82,56 +85,55 @@ nohup mvn spring-boot:run > backend.log 2>&1 &
 
 ## 🌐 Frontend Setup (ReactJS)
 
-### 1. Update API Endpoint
-
-Edit the following file:
-
 ```bash
-nano ~/ReactJS-Spring-Boot-CRUD-Full-Stack-App/react-frontend/src/services/EmployeeService.js
+cd ../react-frontend
 ```
 
-Update the base URL with backend's **Load Balancer DNS/IP**:
+### Configure Backend URL
+
+**Option 1: Use `.env` file (recommended)**
+Create or edit `react-frontend/.env`:
+
+```env
+REACT_APP_BACKEND_URL=http://<backend-lb-dns>:8080/api/v1/employees
+```
+
+**Option 2: Hardcode in `EmployeeService.js`**
 
 ```js
 const EMPLOYEE_API_BASE_URL = "http://<backend-lb-dns>:8080/api/v1/employees";
 ```
 
-Or use `.env` for easy configuration:
+### Run Frontend
 
 ```bash
-REACT_APP_BACKEND_URL=http://<backend-lb-dns>:8080/api/v1/employees
-```
-
-### 2. Run Frontend
-
-```bash
-cd ~/ReactJS-Spring-Boot-CRUD-Full-Stack-App/react-frontend
-
 export NODE_OPTIONS=--openssl-legacy-provider
 npm install
 rm -rf build
 npm run build
-
-# Serve production build
 npm install -g serve
 nohup serve -s build -l 3000 > serve.log 2>&1 &
 ```
 
 ---
 
-## 🐬 MySQL Database
+## 🐬 MySQL Access (via RDS)
 
-To connect to your RDS DB manually:
+To test DB connection:
 
 ```bash
 mysql -h <RDS-endpoint> -u admin -p
 ```
 
-Create the `capstone_db` database and required tables manually or via JPA auto-creation.
+Then create the database manually:
+
+```sql
+CREATE DATABASE capstone_db;
+```
 
 ---
 
-## 🐳 Docker (Optional)
+## 🐳 Docker Support (Optional)
 
 ### 🧱 Frontend Dockerfile
 
@@ -164,34 +166,56 @@ ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
 
 ---
 
-## 🔄 IP/URL Update Checklist
+## 🔄 IP/URL Update Checklist (EC2 Public IP or Load Balancer DNS)
 
-When EC2 IPs change, make sure to:
+When your **EC2 IP** or **Load Balancer DNS** changes, update the following:
 
-1. ✅ Update React frontend `.env` file:
+### ✅ 1. React Frontend `.env`
 
-   ```env
-   REACT_APP_BACKEND_URL=http://<new-backend-ip>:8080/api/v1/employees
-   ```
+**Path**: `react-frontend/.env`
 
-2. ✅ Update Spring Boot `application.properties`:
-
-   ```properties
-   frontend.url=http://<new-frontend-ip>:3000
-   ```
+```env
+REACT_APP_BACKEND_URL=http://<backend-lb-dns>:8080/api/v1/employees
+# or
+REACT_APP_BACKEND_URL=http://<backend-ec2-ip>:8080/api/v1/employees
+```
 
 ---
 
-## 📋 Process Management
+### ✅ 2. Spring Boot `application.properties`
 
-### 🔍 Check Running Services
+**Path**: `springboot-backend/src/main/resources/application.properties`
+
+```properties
+frontend.url=http://<frontend-lb-dns>:3000
+# or
+frontend.url=http://<frontend-ec2-ip>:3000
+```
+
+---
+
+### ✅ 3. `EmployeeService.js` (if not using `.env`)
+
+**Path**: `react-frontend/src/services/EmployeeService.js`
+
+```js
+const EMPLOYEE_API_BASE_URL = "http://<backend-lb-dns>:8080/api/v1/employees";
+// or
+const EMPLOYEE_API_BASE_URL = "http://<backend-ec2-ip>:8080/api/v1/employees";
+```
+
+---
+
+## 🧪 Process Management
+
+### Check running processes:
 
 ```bash
 ps aux | grep mvn
 ps aux | grep serve
 ```
 
-### ❌ Stop Services
+### Stop processes:
 
 ```bash
 ps -ef | grep spring-boot
@@ -201,16 +225,3 @@ pkill -9 <PID>
 
 ---
 
-## ✅ LoadBalancer Integration (Kubernetes/EKS)
-
-In `react-frontend-service.yaml`, set the backend service URL using the LoadBalancer DNS:
-
-```yaml
-env:
-  - name: REACT_APP_BACKEND_URL
-    value: http://<backend-lb-dns>:8080/api/v1/employees
-```
-
----
-
-This should now be copy-paste ready for your repo. Let me know if you want me to include CI/CD steps, `Docker Compose`, or EKS manifests too.
