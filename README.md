@@ -1,6 +1,4 @@
-.
 
----
 
 ## 🚀 React + Spring Boot Full Stack Application
 
