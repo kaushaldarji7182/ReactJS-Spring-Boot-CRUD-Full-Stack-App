@@ -1,6 +1,4 @@
-# ReactJS-Spring-Boot-CRUD-Full-Stack-App 
-
-Here is a well-structured and properly formatted `README.md` section for your GitHub repo that includes complete instructions for environment setup, Docker usage, and configuration steps when deploying your React-SpringBoot app on EC2 with MySQL and Load Balancers. You can copy-paste this into your GitHub README file and tweak minor values like IPs or DB names as needed.
+.
 
 ---
 
