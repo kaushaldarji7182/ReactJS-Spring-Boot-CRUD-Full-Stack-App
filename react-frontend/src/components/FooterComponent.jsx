@@ -1,23 +1,26 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class FooterComponent extends Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-                 
-        }
-    }
-
     render() {
         return (
             <div>
-                <footer className = "footer">
-                    <span className="text-muted">All Rights Reserved 2020 @JavaGuides</span>
+                <footer className="footer" style={footerStyle}>
+                    <span>© 2025 Kaushal Darji. All rights reserved.</span>
                 </footer>
             </div>
-        )
+        );
     }
 }
 
-export default FooterComponent
+const footerStyle = {
+    backgroundColor: '#f8f9fa',
+    padding: '10px',
+    textAlign: 'center',
+    position: 'fixed',
+    bottom: 0,
+    width: '100%',
+    fontSize: '14px',
+    color: '#555'
+};
+
+export default FooterComponent;
