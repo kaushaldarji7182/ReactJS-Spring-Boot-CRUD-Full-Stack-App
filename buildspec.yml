@@ -12,10 +12,8 @@ env:
 
 phases:
   install:
-    runtime-versions:
-      nodejs: 18
     commands:
-      - echo "Installing utilities..."
+      - echo "Skipping tool installation - using pre-installed Node.js and Maven"
       - yum install -y jq
 
   pre_build:
