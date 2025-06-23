@@ -23,7 +23,6 @@ phases:
       - docker tag $FRONTEND_REPO:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$FRONTEND_REPO:$IMAGE_TAG
 
       - echo Building backend Docker image...
-      # Navigate to backend directory, build, then navigate back
       - cd $BACKEND_DIR && ./mvnw clean package -DskipTests && cd -
       - docker build -t $BACKEND_REPO:$IMAGE_TAG $BACKEND_DIR
       - docker tag $BACKEND_REPO:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG
@@ -38,11 +37,9 @@ phases:
       - mkdir -p k8s-out
       - sed "s|IMAGE_PLACEHOLDER|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$FRONTEND_REPO:$IMAGE_TAG|g" $FRONTEND_DIR/frontend-deployment.yaml > k8s-out/frontend-deployment.yaml
       - cp $FRONTEND_DIR/frontend-service.yaml k8s-out/frontend-service.yaml
-
       - sed "s|IMAGE_PLACEHOLDER|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG|g" $BACKEND_DIR/backend-deployment.yaml > k8s-out/backend-deployment.yaml
       - cp $BACKEND_DIR/backend-service.yaml k8s-out/backend-service.yaml
-
-      - echo Kubernetes manifests prepared:
+      - echo "Kubernetes manifests prepared:"
       - ls -la k8s-out
 
 artifacts:
