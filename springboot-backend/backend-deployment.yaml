@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: 235494811179.dkr.ecr.us-east-1.amazonaws.com/kaushal-backend-ecr
+          image: IMAGE_PLACEHOLDER
           ports:
             - containerPort: 8080
           env:
