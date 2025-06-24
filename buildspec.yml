@@ -12,11 +12,10 @@ phases:
 
   build:
     commands:
-      - echo "Applying Kubernetes manifests..."
-      - kubectl apply -f k8s-out/
+      - echo "Applying frontend manifests..."
+      - kubectl apply -f react-frontend/frontend-deployment.yaml
+      - kubectl apply -f react-frontend/frontend-service.yaml
 
-artifacts:
-  base-directory: k8s-out
-  discard-paths: yes
-  files:
-    - '**/*.yaml'
+      - echo "Applying backend manifests..."
+      - kubectl apply -f springboot-backend/backend-deployment.yaml
+      - kubectl apply -f springboot-backend/backend-service.yaml
