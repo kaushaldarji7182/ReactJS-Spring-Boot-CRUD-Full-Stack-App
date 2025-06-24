@@ -9,6 +9,9 @@ env:
     FRONTEND_DIR: react-frontend
     BACKEND_DIR: springboot-backend
     K8S_MANIFEST_DIR: Kubernetes-Manifests-file
+    SONAR_HOST: http://52.91.196.190
+    SONAR_PROJECT_KEY: capstone
+    SONAR_TOKEN: sqp_449ae2616d96836397554253874ee28714fb7060
 
 phases:
   install:
@@ -16,7 +19,12 @@ phases:
       nodejs: 18
     commands:
       - echo Installing utilities...
-      - yum install -y jq
+      - yum install -y jq unzip
+      - echo Installing SonarQube Scanner...
+      - curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+      - unzip sonar-scanner.zip
+      - mv sonar-scanner-5.0.1.3006-linux sonar-scanner
+      - export PATH=$PATH:$(pwd)/sonar-scanner/bin
 
   pre_build:
     commands:
@@ -24,9 +32,8 @@ phases:
       - export IMAGE_TAG=v1.${CODEBUILD_BUILD_NUMBER}
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com
-      - echo Installing frontend and backend dependencies...
+      - echo Installing frontend dependencies...
       - cd $FRONTEND_DIR && npm install && cd -
-      - cd $BACKEND_DIR && npm install && cd -
 
   build:
     commands:
@@ -35,6 +42,8 @@ phases:
       - docker tag $FRONTEND_REPO:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$FRONTEND_REPO:$IMAGE_TAG
       - docker build -t $BACKEND_REPO:$IMAGE_TAG $BACKEND_DIR
       - docker tag $BACKEND_REPO:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG
+      - echo Running SonarQube analysis...
+      - sonar-scanner -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.sources=. -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN
 
   post_build:
     commands:
@@ -75,4 +84,3 @@ cache:
   paths:
     - 'react-frontend/node_modules/**/*'
     - 'springboot-backend/node_modules/**/*'
-
