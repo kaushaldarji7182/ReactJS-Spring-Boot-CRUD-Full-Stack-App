@@ -16,7 +16,7 @@ phases:
       nodejs: 18
       java: corretto17
     commands:
-      - echo "No extra tools to install. Proceeding..."
+      - echo "Skipping tool installation. Nothing to install in this phase."
 
   pre_build:
     commands:
