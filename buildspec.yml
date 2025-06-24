@@ -16,7 +16,7 @@ phases:
       - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com
       - echo Build started on `date`
       - export IMAGE_TAG=$CODEBUILD_BUILD_NUMBER
-      - echo Using image tag: $IMAGE_TAG
+      #- echo Using image tag: $IMAGE_TAG
 
   build:
     commands:
@@ -40,11 +40,9 @@ phases:
       - sed -i "s|PLACEHOLDER|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG|" backend-deployment.yaml
       - kubectl apply -f backend-deployment.yaml
       - kubectl apply -f backend-service.yaml
-
       - echo Updating frontend manifests and deploying...
       - cd ../$FRONTEND_DIR
       - sed -i "s|PLACEHOLDER|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$FRONTEND_REPO:$IMAGE_TAG|" frontend-deployment.yaml
       - kubectl apply -f frontend-deployment.yaml
       - kubectl apply -f frontend-service.yaml
-
       - echo Deployment completed on `date`
