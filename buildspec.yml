@@ -8,7 +8,7 @@ env:
     BACKEND_REPO: kaushal-backend-ecr
     FRONTEND_DIR: react-frontend
     BACKEND_DIR: springboot-backend
-    EKS_CLUSTER_NAME: kaushal-cluster   # 🔁 Replace this with your EKS cluster name
+    EKS_CLUSTER_NAME: kaushal-cluster
 
 phases:
   install:
@@ -18,12 +18,12 @@ phases:
       - echo Installing utilities...
       - yum install -y jq unzip curl
 
-      - echo Installing kubectl...
-      - curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.29.1/2024-05-10/bin/linux/amd64/kubectl
-      - chmod +x ./kubectl
-      - mv ./kubectl /usr/local/bin/
+      - echo Installing kubectl from official AWS S3...
+      - curl -LO https://amazon-eks.s3.us-west-2.amazonaws.com/1.29.1/2024-05-10/bin/linux/amd64/kubectl
+      - chmod +x kubectl
+      - mv kubectl /usr/local/bin/
 
-      - echo Verifying kubectl version...
+      - echo Verifying kubectl...
       - kubectl version --client
 
   pre_build:
@@ -64,7 +64,7 @@ phases:
       - echo Updating kubeconfig for EKS cluster...
       - aws eks update-kubeconfig --region $REGION --name $EKS_CLUSTER_NAME
 
-      - echo Checking EKS connectivity...
+      - echo Verifying EKS access...
       - kubectl get nodes
 
       - echo Deploying manifests to EKS...
