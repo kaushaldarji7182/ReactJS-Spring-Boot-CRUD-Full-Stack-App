@@ -17,8 +17,8 @@ phases:
       java: corretto17
     commands:
       - echo Installing dependencies...
-      - apt-get update -y
-      - apt-get install -y jq curl unzip
+      - yum update -y
+      - yum install -y jq curl unzip
 
   pre_build:
     commands:
@@ -36,11 +36,11 @@ phases:
 
   build:
     commands:
-      - echo Building Docker images...
-
+      - echo Building frontend Docker image...
       - docker build -t $FRONTEND_REPO:$IMAGE_TAG $FRONTEND_DIR
       - docker tag $FRONTEND_REPO:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$FRONTEND_REPO:$IMAGE_TAG
 
+      - echo Building backend Docker image...
       - docker build -t $BACKEND_REPO:$IMAGE_TAG $BACKEND_DIR
       - docker tag $BACKEND_REPO:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG
 
