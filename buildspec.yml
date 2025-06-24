@@ -75,3 +75,7 @@ artifacts:
   discard-paths: yes
   files:
     - '**/*.yaml'
+
+cache:
+  paths:
+    - 'react-frontend/node_modules/**/*'
