@@ -18,7 +18,6 @@ phases:
     commands:
       - echo Installing required tools...
       - yum install -y jq
-      - cd ReactJS-Spring-Boot-CRUD-Full-Stack-App  # Ensure CodeBuild is in the correct directory
 
   pre_build:
     commands:
@@ -69,7 +68,7 @@ phases:
       - kubectl apply -f k8s-out/frontend-service.yaml
 
 artifacts:
-  base-directory: ReactJS-Spring-Boot-CRUD-Full-Stack-App/k8s-out
+  base-directory: k8s-out
   discard-paths: yes
   files:
     - '**/*.yaml'
