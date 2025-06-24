@@ -15,14 +15,10 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - echo Installing utilities...
-      - yum install -y jq unzip curl
-
       - echo Installing kubectl from official AWS S3...
       - curl -LO https://amazon-eks.s3.us-west-2.amazonaws.com/1.29.1/2024-05-10/bin/linux/amd64/kubectl
       - chmod +x kubectl
       - mv kubectl /usr/local/bin/
-
       - echo Verifying kubectl...
       - kubectl version --client
 
