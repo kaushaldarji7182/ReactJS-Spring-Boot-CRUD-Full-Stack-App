@@ -17,9 +17,16 @@ phases:
     runtime-versions:
       java: corretto17
       nodejs: 18
+      docker: 20
     commands:
-      - echo "Installing tools..."
-      - yum install -y jq
+      - echo "Installing utilities..."
+      - yum install -y jq mysql unzip
+      - curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      - unzip -q awscliv2.zip && ./aws/install
+      - curl --silent --location "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
+      - mv /tmp/eksctl /usr/local/bin
+      - curl -LO "https://dl.k8s.io/release/$(curl -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      - chmod +x kubectl && mv kubectl /usr/local/bin/
 
   pre_build:
     commands:
