@@ -25,11 +25,15 @@ phases:
       - export IMAGE_TAG=build-${CODEBUILD_BUILD_NUMBER}
       - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com
 
+      - echo Logging into Docker Hub to avoid rate limits...
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
       - echo Configuring kubectl for EKS access...
       - aws eks update-kubeconfig --region $REGION --name $EKS_CLUSTER_NAME
 
   build:
     commands:
+      # Optional: Uncomment if you want to build frontend Docker image
       # - echo Building frontend Docker image...
       # - docker build -t $FRONTEND_REPO:$IMAGE_TAG $FRONTEND_DIR
       # - docker tag $FRONTEND_REPO:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$FRONTEND_REPO:$IMAGE_TAG
@@ -43,25 +47,29 @@ phases:
 
       - echo Running SonarQube scan...
       - cd $BACKEND_DIR
-      - mvn clean verify sonar:sonar -Dsonar.projectKey=capstone -Dsonar.host.url=http://54.159.185.190 -Dsonar.login=sqp_f4dd494755e8f1947b68a07ca37ec3154146cf12
+      - mvn clean verify sonar:sonar \
+          -Dsonar.projectKey=capstone \
+          -Dsonar.host.url=http://54.159.185.190 \
+          -Dsonar.login=sqp_f4dd494755e8f1947b68a07ca37ec3154146cf12
       - cd -
 
   post_build:
     commands:
+      # Optional: Uncomment if you build the frontend image above
       # - echo Pushing frontend image to ECR...
       # - docker push ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$FRONTEND_REPO:$IMAGE_TAG || echo "Frontend push failed, continuing..."
 
       - echo Pushing backend image to ECR...
       - docker push ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG || echo "Backend push failed, continuing..."
 
-      - echo Preparing Kubernetes manifests with image substitutions...
+      - echo Preparing Kubernetes manifests...
       - mkdir -p k8s-out
       - sed "s|IMAGE_PLACEHOLDER|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$FRONTEND_REPO:latest|g" $FRONTEND_DIR/frontend-deployment.yaml > k8s-out/frontend-deployment.yaml
       - cp $FRONTEND_DIR/frontend-service.yaml k8s-out/frontend-service.yaml
       - sed "s|IMAGE_PLACEHOLDER|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG|g" $BACKEND_DIR/backend-deployment.yaml > k8s-out/backend-deployment.yaml
       - cp $BACKEND_DIR/backend-service.yaml k8s-out/backend-service.yaml
 
-      - echo Applying manifests to EKS...
+      - echo Applying Kubernetes manifests to EKS...
       - kubectl apply -f k8s-out/backend-deployment.yaml
       - kubectl apply -f k8s-out/backend-service.yaml
       - kubectl apply -f k8s-out/frontend-deployment.yaml
