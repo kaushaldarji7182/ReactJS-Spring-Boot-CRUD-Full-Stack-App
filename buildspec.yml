@@ -11,13 +11,6 @@ env:
     EKS_CLUSTER_NAME: kaushal-cluster
 
 phases:
-  install:
-    runtime-versions:
-      nodejs: 18
-      java: corretto17
-    commands:
-      - echo "Skipping tool installation. Nothing to install in this phase."
-
   pre_build:
     commands:
       - echo Setting image tag...
