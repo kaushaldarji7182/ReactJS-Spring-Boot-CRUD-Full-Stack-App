@@ -8,9 +8,6 @@ env:
     BACKEND_REPO: kaushal-backend-ecr
     FRONTEND_DIR: react-frontend
     BACKEND_DIR: springboot-backend
-    SONAR_HOST: http://52.91.196.190
-    SONAR_PROJECT_KEY: capstone
-    SONAR_TOKEN: sqp_449ae2616d96836397554253874ee28714fb7060
 
 phases:
   install:
@@ -36,12 +33,6 @@ phases:
       - docker tag $FRONTEND_REPO:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$FRONTEND_REPO:$IMAGE_TAG
       - docker build -t $BACKEND_REPO:$IMAGE_TAG $BACKEND_DIR
       - docker tag $BACKEND_REPO:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG
-
-      - echo "Checking if CodeBuild can reach SonarQube..."
-      - curl -I $SONAR_HOST || echo "SonarQube is NOT reachable from CodeBuild"
-
-      - echo Running SonarQube analysis...
-      - sonar-scanner -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.sources=. -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN
 
   post_build:
     commands:
