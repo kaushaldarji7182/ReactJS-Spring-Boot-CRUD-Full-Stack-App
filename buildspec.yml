@@ -1,32 +1,57 @@
 version: 0.2
 
+env:
+  variables:
+    REGION: "us-east-1"
+    EKS_CLUSTER_NAME: "kaushal-cluster"
+    FRONTEND_DIR: "react-frontend"
+    BACKEND_DIR: "springboot-backend"
+    FRONTEND_REPO: "235494811179.dkr.ecr.us-east-1.amazonaws.com/kaushal-frontend-ecr"
+    BACKEND_REPO: "235494811179.dkr.ecr.us-east-1.amazonaws.com/kaushal-backend-ecr"
+    IMAGE_TAG: "build-$(date +%Y%m%d%H%M%S)"
+
 phases:
   install:
     runtime-versions:
+      docker: 20
       nodejs: 18
     commands:
+      - echo "Installing dependencies and logging into ECR..."
+      - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $FRONTEND_REPO
+      - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $BACKEND_REPO
       - echo "Assuming kubectl is preinstalled"
 
   pre_build:
     commands:
       - echo "Updating kubeconfig for EKS cluster..."
-      - aws eks update-kubeconfig --region us-east-1 --name kaushal-cluster
+      - aws eks update-kubeconfig --region $REGION --name $EKS_CLUSTER_NAME
 
   build:
     commands:
-      - echo "Checking AWS identity for kubectl auth..."
-      - aws sts get-caller-identity
+      - echo "Building frontend Docker image..."
+      - docker build -t $FRONTEND_REPO:$IMAGE_TAG $FRONTEND_DIR
 
-      - echo "Testing kubectl access to EKS..."
-      - kubectl get nodes || echo "Access test failed - proceeding with apply anyway"
+      - echo "Building backend Docker image..."
+      - docker build -t $BACKEND_REPO:$IMAGE_TAG $BACKEND_DIR
 
-      - echo "Applying frontend manifests..."
-      - kubectl apply -f react-frontend/frontend-deployment.yaml --validate=false
-      - kubectl apply -f react-frontend/frontend-service.yaml --validate=false
+      # - echo "Pushing frontend image to ECR..."
+      # - docker push $FRONTEND_REPO:$IMAGE_TAG
 
-      - echo "Applying backend manifests..."
-      - kubectl apply -f springboot-backend/backend-deployment.yaml --validate=false
-      - kubectl apply -f springboot-backend/backend-service.yaml --validate=false
+      # - echo "Pushing backend image to ECR..."
+      # - docker push $BACKEND_REPO:$IMAGE_TAG
+
+  post_build:
+    commands:
+      - echo "Verifying access to EKS..."
+      - kubectl get nodes || echo "kubectl failed, continuing anyway..."
+
+      - echo "Applying frontend Kubernetes manifests..."
+      - kubectl apply -f $FRONTEND_DIR/frontend-deployment.yaml --validate=false
+      - kubectl apply -f $FRONTEND_DIR/frontend-service.yaml --validate=false
+
+      - echo "Applying backend Kubernetes manifests..."
+      - kubectl apply -f $BACKEND_DIR/backend-deployment.yaml --validate=false
+      - kubectl apply -f $BACKEND_DIR/backend-service.yaml --validate=false
 
 artifacts:
   files:
