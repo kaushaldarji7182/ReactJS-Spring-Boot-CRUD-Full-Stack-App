@@ -51,8 +51,8 @@ phases:
       - sed "s|IMAGE_PLACEHOLDER|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG|g" $BACKEND_DIR/backend-deployment.yaml > k8s-out/backend-deployment.yaml
       - cp $BACKEND_DIR/backend-service.yaml k8s-out/backend-service.yaml
 
-      - echo Installing kubectl from us-east-1...
-      - curl -LO "https://s3.us-east-1.amazonaws.com/amazon-eks/1.29.1/2024-04-05/bin/linux/amd64/kubectl"
+      - echo Installing kubectl from EKS official download link...
+      - curl -LO "https://amazon-eks.s3.us-east-1.amazonaws.com/1.29.1/2024-04-05/bin/linux/amd64/kubectl"
       - chmod +x ./kubectl && mv ./kubectl /usr/local/bin/
 
       - echo Updating kubeconfig for EKS cluster...
