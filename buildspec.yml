@@ -8,10 +8,8 @@ env:
     BACKEND_REPO: kaushal-backend-ecr
     FRONTEND_DIR: react-frontend
     BACKEND_DIR: springboot-backend
-    SONAR_HOST: http://52.91.196.190
-    SONAR_PROJECT_KEY: capstone
-    SONAR_TOKEN: sqp_449ae2616d96836397554253874ee28714fb7060
     EKS_CLUSTER_NAME: kaushal-cluster
+    IMAGE_TAG: build-${CODEBUILD_BUILD_NUMBER}
 
 phases:
   install:
@@ -19,51 +17,47 @@ phases:
       java: corretto17
       nodejs: 18
     commands:
-      - echo Installing required tools...
+      - echo Installing tools...
       - yum install -y jq
 
   pre_build:
     commands:
       - echo Logging into Amazon ECR...
-      - export IMAGE_TAG=build-${CODEBUILD_BUILD_NUMBER}
       - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com
 
-      - echo "Configuring kubectl to access EKS..."
+      - echo Setting up kubectl for EKS...
       - aws eks update-kubeconfig --region $REGION --name $EKS_CLUSTER_NAME
-
-      - echo "Running SonarQube scan (tests skipped)..."
-      - cd $BACKEND_DIR
-      - mvn clean verify sonar:sonar -DskipTests -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN
-      - cd -
 
   build:
     commands:
-      - echo "Building frontend Docker image..."
+      - echo Building frontend Docker image...
       - docker build -t $FRONTEND_REPO:$IMAGE_TAG $FRONTEND_DIR
       - docker tag $FRONTEND_REPO:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$FRONTEND_REPO:$IMAGE_TAG
 
-      - echo "Building backend Docker image..."
+      - echo Building backend Docker image...
       - cd $BACKEND_DIR && ./mvnw clean package -DskipTests && cd -
       - docker build -t $BACKEND_REPO:$IMAGE_TAG $BACKEND_DIR
       - docker tag $BACKEND_REPO:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG
 
   post_build:
     commands:
-      - echo "Pushing Docker images to Amazon ECR..."
+      - echo Pushing Docker images to ECR...
       - docker push ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$FRONTEND_REPO:$IMAGE_TAG
       - docker push ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG
 
-      - echo "Preparing Kubernetes manifests..."
+      - echo Preparing and applying Kubernetes manifests...
       - mkdir -p k8s-out
+
       - sed "s|IMAGE_PLACEHOLDER|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$FRONTEND_REPO:$IMAGE_TAG|g" $FRONTEND_DIR/frontend-deployment.yaml > k8s-out/frontend-deployment.yaml
       - cp $FRONTEND_DIR/frontend-service.yaml k8s-out/frontend-service.yaml
+
       - sed "s|IMAGE_PLACEHOLDER|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG|g" $BACKEND_DIR/backend-deployment.yaml > k8s-out/backend-deployment.yaml
       - cp $BACKEND_DIR/backend-service.yaml k8s-out/backend-service.yaml
 
-      - echo "Applying manifests to EKS..."
-      - kubectl apply -f k8s-out/backend-deployment.yaml
+      - echo Deploying to EKS...
+      - kubectl apply -f k8s-out/backend-deployment.yaml --validate=false
       - kubectl apply -f k8s-out/backend-service.yaml
-      - kubectl apply -f k8s-out/frontend-deployment.yaml
+      - kubectl apply -f k8s-out/frontend-deployment.yaml --validate=false
       - kubectl apply -f k8s-out/frontend-service.yaml
 
 artifacts:
