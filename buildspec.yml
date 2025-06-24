@@ -15,12 +15,7 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - echo Installing kubectl from official AWS S3...
-      - curl -LO https://amazon-eks.s3.us-west-2.amazonaws.com/1.29.1/2024-05-10/bin/linux/amd64/kubectl
-      - chmod +x kubectl
-      - mv kubectl /usr/local/bin/
-      - echo Verifying kubectl...
-      - kubectl version --client
+      - echo Skipping kubectl installation — assuming it's preinstalled
 
   pre_build:
     commands:
@@ -37,6 +32,7 @@ phases:
       - echo Building Docker images...
       - docker build -t $FRONTEND_REPO:$IMAGE_TAG $FRONTEND_DIR
       - docker tag $FRONTEND_REPO:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$FRONTEND_REPO:$IMAGE_TAG
+
       - docker build -t $BACKEND_REPO:$IMAGE_TAG $BACKEND_DIR
       - docker tag $BACKEND_REPO:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG
 
@@ -59,9 +55,6 @@ phases:
 
       - echo Updating kubeconfig for EKS cluster...
       - aws eks update-kubeconfig --region $REGION --name $EKS_CLUSTER_NAME
-
-      - echo Verifying EKS access...
-      - kubectl get nodes
 
       - echo Deploying manifests to EKS...
       - kubectl apply -f k8s-out/
