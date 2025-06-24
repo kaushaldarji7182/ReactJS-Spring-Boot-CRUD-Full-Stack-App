@@ -15,7 +15,7 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com
       - echo Build started on `date`
-      - IMAGE_TAG=$CODEBUILD_BUILD_NUMBER
+      - export IMAGE_TAG="$CODEBUILD_BUILD_NUMBER"
       - echo Using image tag: $IMAGE_TAG
 
   build:
