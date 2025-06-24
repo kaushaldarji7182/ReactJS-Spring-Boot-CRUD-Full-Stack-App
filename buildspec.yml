@@ -11,7 +11,7 @@ env:
     SONAR_HOST: http://52.91.196.190
     SONAR_PROJECT_KEY: capstone
     SONAR_TOKEN: sqp_449ae2616d96836397554253874ee28714fb7060
-    EKS_CLUSTER_NAME: your-eks-cluster-name  # ❗️Replace this
+    EKS_CLUSTER_NAME: kaushal-cluster  # ✅ Your actual cluster name
 
 phases:
   install:
@@ -19,7 +19,7 @@ phases:
       java: corretto17
       nodejs: 18
     commands:
-      - echo Installing jq...
+      - echo Installing required tools...
       - yum install -y jq
 
   pre_build:
@@ -60,10 +60,7 @@ phases:
       - sed "s|IMAGE_PLACEHOLDER|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG|g" $BACKEND_DIR/backend-deployment.yaml > k8s-out/backend-deployment.yaml
       - cp $BACKEND_DIR/backend-service.yaml k8s-out/backend-service.yaml
 
-      - echo --- Deployment YAMLs generated ---
-      - ls -la k8s-out
-
-      - echo Applying manifests to EKS cluster...
+      - echo Applying manifests to EKS...
       - kubectl apply -f k8s-out/backend-deployment.yaml
       - kubectl apply -f k8s-out/backend-service.yaml
       - kubectl apply -f k8s-out/frontend-deployment.yaml
