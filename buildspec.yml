@@ -17,13 +17,8 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - echo Installing utilities...
-      - yum install -y jq unzip
-      - echo Installing SonarQube Scanner...
-      - curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-      - unzip sonar-scanner.zip
-      - mv sonar-scanner-5.0.1.3006-linux sonar-scanner
-      - export PATH=$PATH:$(pwd)/sonar-scanner/bin
+      - echo Installing required utilities...
+      - yum install -y jq
 
   pre_build:
     commands:
@@ -41,6 +36,10 @@ phases:
       - docker tag $FRONTEND_REPO:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$FRONTEND_REPO:$IMAGE_TAG
       - docker build -t $BACKEND_REPO:$IMAGE_TAG $BACKEND_DIR
       - docker tag $BACKEND_REPO:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG
+
+      - echo "Checking if CodeBuild can reach SonarQube..."
+      - curl -I $SONAR_HOST || echo "SonarQube is NOT reachable from CodeBuild"
+
       - echo Running SonarQube analysis...
       - sonar-scanner -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.sources=. -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN
 
@@ -61,8 +60,7 @@ phases:
       - sed "s|IMAGE_PLACEHOLDER|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG|g" springboot-backend/backend-deployment.yaml > k8s-out/backend-deployment.yaml
       - cp springboot-backend/backend-service.yaml k8s-out/backend-service.yaml
 
-      # --- DEBUG ---
-      - echo "Final list of generated Kubernetes YAML files:"
+      - echo Final list of generated Kubernetes YAML files:
       - find k8s-out/
 
 artifacts:
