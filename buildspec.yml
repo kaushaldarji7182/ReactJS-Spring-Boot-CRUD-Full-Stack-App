@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    ACCOUNT_ID: 390403857216
+    ACCOUNT_ID: 235494811179
     REGION: us-east-1
     FRONTEND_REPO: frontend
     BACKEND_REPO: backend
