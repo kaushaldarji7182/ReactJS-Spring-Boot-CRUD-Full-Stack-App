@@ -6,8 +6,8 @@ env:
     REGION: us-east-1
     FRONTEND_REPO: frontend
     BACKEND_REPO: backend
-    FRONTEND_DIR: Application-Code/frontend
-    BACKEND_DIR: Application-Code/backend
+    FRONTEND_DIR: react-frontend
+    BACKEND_DIR: springboot-backend
     K8S_MANIFEST_DIR: Kubernetes-Manifests-file
 
 phases:
@@ -73,5 +73,6 @@ artifacts:
 
 cache:
   paths:
-    - 'Application-Code/frontend/node_modules/**/*'
-    - 'Application-Code/backend/node_modules/**/*'
+    - 'react-frontend/node_modules/**/*'
+    - 'springboot-backend/node_modules/**/*'
+
