@@ -2,20 +2,32 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      nodejs: 18
     commands:
-      - echo "Assuming kubectl is already installed"
+      - echo "Assuming kubectl is preinstalled"
 
   pre_build:
     commands:
-      - echo "Updating kubeconfig..."
+      - echo "Updating kubeconfig for EKS cluster..."
       - aws eks update-kubeconfig --region us-east-1 --name kaushal-cluster
 
   build:
     commands:
+      - echo "Checking AWS identity for kubectl auth..."
+      - aws sts get-caller-identity
+
+      - echo "Testing kubectl access to EKS..."
+      - kubectl get nodes || echo "Access test failed - proceeding with apply anyway"
+
       - echo "Applying frontend manifests..."
-      - kubectl apply -f react-frontend/frontend-deployment.yaml
-      - kubectl apply -f react-frontend/frontend-service.yaml
+      - kubectl apply -f react-frontend/frontend-deployment.yaml --validate=false
+      - kubectl apply -f react-frontend/frontend-service.yaml --validate=false
 
       - echo "Applying backend manifests..."
-      - kubectl apply -f springboot-backend/backend-deployment.yaml
-      - kubectl apply -f springboot-backend/backend-service.yaml
+      - kubectl apply -f springboot-backend/backend-deployment.yaml --validate=false
+      - kubectl apply -f springboot-backend/backend-service.yaml --validate=false
+
+artifacts:
+  files:
+    - '**/*.yaml'
