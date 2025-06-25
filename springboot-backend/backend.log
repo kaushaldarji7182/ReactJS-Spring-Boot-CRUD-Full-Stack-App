@@ -34,77 +34,38 @@ nohup: ignoring input
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.0.4)
 
-2025-06-23T04:23:19.134Z  INFO 3086 --- [  restartedMain] n.j.s.SpringbootBackendApplication       : Starting SpringbootBackendApplication using Java 17.0.15 with PID 3086 (/root/ReactJS-Spring-Boot-CRUD-Full-Stack-App/springboot-backend/target/classes started by root in /root/ReactJS-Spring-Boot-CRUD-Full-Stack-App/springboot-backend)
-2025-06-23T04:23:19.140Z  INFO 3086 --- [  restartedMain] n.j.s.SpringbootBackendApplication       : No active profile set, falling back to 1 default profile: "default"
-2025-06-23T04:23:19.230Z  INFO 3086 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2025-06-23T04:23:19.230Z  INFO 3086 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2025-06-23T04:23:19.638Z  INFO 3086 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-06-23T04:23:19.691Z  INFO 3086 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 46 ms. Found 1 JPA repository interfaces.
-2025-06-23T04:23:20.413Z  INFO 3086 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2025-06-23T04:23:20.426Z  INFO 3086 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2025-06-23T04:23:20.427Z  INFO 3086 --- [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
-2025-06-23T04:23:20.481Z  INFO 3086 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2025-06-23T04:23:20.483Z  INFO 3086 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1250 ms
-2025-06-23T04:23:20.511Z  INFO 3086 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2025-06-23T04:23:20.676Z  INFO 3086 --- [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6d7f3b8b
-2025-06-23T04:23:20.678Z  INFO 3086 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2025-06-23T04:23:20.689Z  INFO 3086 --- [  restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:mysql://kaushal-db.cn0us0ksu6a4.us-east-1.rds.amazonaws.com:3306/capstone_db?useSSL=false&serverTimezone=UTC'
-2025-06-23T04:23:20.820Z  INFO 3086 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-06-23T04:23:20.859Z  INFO 3086 --- [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
-2025-06-23T04:23:21.119Z  INFO 3086 --- [  restartedMain] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
-2025-06-23T04:23:21.120Z  WARN 3086 --- [  restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2025-06-23T04:23:21.800Z  INFO 3086 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2025-06-23T04:23:21.808Z  INFO 3086 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-06-23T04:23:22.062Z  WARN 3086 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-06-23T04:23:22.320Z  INFO 3086 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2025-06-23T04:23:22.357Z  INFO 3086 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-2025-06-23T04:23:22.367Z  INFO 3086 --- [  restartedMain] n.j.s.SpringbootBackendApplication       : Started SpringbootBackendApplication in 3.602 seconds (process running for 3.963)
-2025-06-23T04:28:51.466Z  INFO 3086 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025-06-23T04:28:51.467Z  INFO 3086 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2025-06-23T04:28:51.468Z  INFO 3086 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0
-Hibernate: insert into employees (email_id, first_name, last_name) values (?, ?, ?)
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0 where e1_0.id=?
-Hibernate: delete from employees where id=?
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0 where e1_0.id=?
-Hibernate: delete from employees where id=?
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0 where e1_0.id=?
-Hibernate: delete from employees where id=?
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0 where e1_0.id=?
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0 where e1_0.id=?
-Hibernate: delete from employees where id=?
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0 where e1_0.id=?
-Hibernate: delete from employees where id=?
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0 where e1_0.id=?
-Hibernate: delete from employees where id=?
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0 where e1_0.id=?
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0 where e1_0.id=?
-Hibernate: delete from employees where id=?
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0 where e1_0.id=?
-Hibernate: delete from employees where id=?
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0
-Hibernate: insert into employees (email_id, first_name, last_name) values (?, ?, ?)
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0 where e1_0.id=?
-Hibernate: delete from employees where id=?
-Hibernate: insert into employees (email_id, first_name, last_name) values (?, ?, ?)
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0
-Hibernate: insert into employees (email_id, first_name, last_name) values (?, ?, ?)
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0
-Hibernate: insert into employees (email_id, first_name, last_name) values (?, ?, ?)
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0
-Hibernate: select e1_0.id,e1_0.email_id,e1_0.first_name,e1_0.last_name from employees e1_0
-2025-06-23T07:22:00.928Z  INFO 3086 --- [nio-8080-exec-1] o.apache.coyote.http11.Http11Processor   : Error parsing HTTP request header
+2025-06-24T17:23:42.854Z  INFO 15803 --- [  restartedMain] n.j.s.SpringbootBackendApplication       : Starting SpringbootBackendApplication using Java 17.0.15 with PID 15803 (/root/ReactJS-Spring-Boot-CRUD-Full-Stack-App/springboot-backend/target/classes started by root in /root/ReactJS-Spring-Boot-CRUD-Full-Stack-App/springboot-backend)
+2025-06-24T17:23:42.858Z  INFO 15803 --- [  restartedMain] n.j.s.SpringbootBackendApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-06-24T17:23:42.959Z  INFO 15803 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-24T17:23:42.959Z  INFO 15803 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-24T17:23:43.397Z  INFO 15803 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-24T17:23:43.454Z  INFO 15803 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 49 ms. Found 1 JPA repository interfaces.
+2025-06-24T17:23:44.148Z  INFO 15803 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2025-06-24T17:23:44.159Z  INFO 15803 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-06-24T17:23:44.159Z  INFO 15803 --- [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2025-06-24T17:23:44.221Z  INFO 15803 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-06-24T17:23:44.223Z  INFO 15803 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1261 ms
+2025-06-24T17:23:44.255Z  INFO 15803 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-06-24T17:23:44.430Z  INFO 15803 --- [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@44e38157
+2025-06-24T17:23:44.432Z  INFO 15803 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-06-24T17:23:44.442Z  INFO 15803 --- [  restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:mysql://kaushal-db.cn0us0ksu6a4.us-east-1.rds.amazonaws.com:3306/capstone_db?useSSL=false&serverTimezone=UTC'
+2025-06-24T17:23:44.574Z  INFO 15803 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-24T17:23:44.614Z  INFO 15803 --- [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2025-06-24T17:23:44.870Z  INFO 15803 --- [  restartedMain] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2025-06-24T17:23:44.872Z  WARN 15803 --- [  restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-06-24T17:23:45.564Z  INFO 15803 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2025-06-24T17:23:45.573Z  INFO 15803 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-24T17:23:45.840Z  WARN 15803 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-24T17:23:46.137Z  INFO 15803 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-06-24T17:23:46.163Z  INFO 15803 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2025-06-24T17:23:46.174Z  INFO 15803 --- [  restartedMain] n.j.s.SpringbootBackendApplication       : Started SpringbootBackendApplication in 3.685 seconds (process running for 4.074)
+2025-06-24T18:48:12.194Z  INFO 15803 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-24T18:48:12.195Z  INFO 15803 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-06-24T18:48:12.196Z  INFO 15803 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-06-24T19:16:16.961Z  INFO 15803 --- [nio-8080-exec-5] o.apache.coyote.http11.Http11Processor   : Error parsing HTTP request header
  Note: further occurrences of HTTP request parsing errors will be logged at DEBUG level.
 
-java.lang.IllegalArgumentException: Invalid character found in method name [0x160x030x010x060x850x010x000x060x810x030x030x16N0xf00xe4c0xaf0x1b0xb20x900xbf0x92w0xbc00x160xf60xab0xaa0xa70xbe0x110xd90xcb0xef0xe60xfdF0x8a0xfb0xa3i0xec ]. HTTP method names must be tokens
+java.lang.IllegalArgumentException: Invalid character found in method name [0x160x030x010x010xfc0x010x000x010xf80x030x030x8e^O0xcb0xf20xed0xbf0xacs ]. HTTP method names must be tokens
 	at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:419) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
 	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:272) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
 	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) ~[tomcat-embed-core-10.1.5.jar:10.1.5]

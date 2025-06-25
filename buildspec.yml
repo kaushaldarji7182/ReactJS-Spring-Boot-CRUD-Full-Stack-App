@@ -17,7 +17,9 @@ phases:
       nodejs: 18
     commands:
       - echo Installing required tools...
-      - yum install -y jq
+      - yum install -y jq git
+      - echo Installing Trivy...
+      - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
   pre_build:
     commands:
@@ -40,6 +42,11 @@ phases:
       - docker build -t $BACKEND_REPO:$IMAGE_TAG $BACKEND_DIR
       - docker tag $BACKEND_REPO:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG
 
+      - echo Scanning backend image with Trivy...
+      - mkdir -p k8s-out
+      - export IMAGE_URI=${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG
+      - trivy image $IMAGE_URI --severity CRITICAL,HIGH --format json --output k8s-out/trivy-report.json || echo "Trivy scan completed with findings"
+
       - echo Running SonarQube scan...
       - cd $BACKEND_DIR
       - mvn clean verify sonar:sonar -Dsonar.projectKey=capstone -Dsonar.host.url=http://54.159.185.190 -Dsonar.login=sqp_f4dd494755e8f1947b68a07ca37ec3154146cf12
@@ -51,7 +58,6 @@ phases:
       - docker push ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG || echo "Backend push failed, continuing..."
 
       - echo Preparing Kubernetes manifests with image substitutions...
-      - mkdir -p k8s-out
       - sed "s|IMAGE_PLACEHOLDER|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$FRONTEND_REPO:latest|g" $FRONTEND_DIR/frontend-deployment.yaml > k8s-out/frontend-deployment.yaml
       - cp $FRONTEND_DIR/frontend-service.yaml k8s-out/frontend-service.yaml
       - sed "s|IMAGE_PLACEHOLDER|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/$BACKEND_REPO:$IMAGE_TAG|g" $BACKEND_DIR/backend-deployment.yaml > k8s-out/backend-deployment.yaml
@@ -67,4 +73,5 @@ artifacts:
   base-directory: k8s-out
   discard-paths: yes
   files:
-    - '**/*.yaml'
+    - '*.yaml'
+    - trivy-report.json
