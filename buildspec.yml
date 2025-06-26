@@ -4,7 +4,7 @@ env:
   variables:
     ACCOUNT_ID: 235494811179
     REGION: us-east-1
-    FRONTEND_REPO: kaushal-frontend-ecr1
+    FRONTEND_REPO: kaushal-frontend-ecr
     BACKEND_REPO: kaushal-backend-ecr
     FRONTEND_DIR: react-frontend
     BACKEND_DIR: springboot-backend
